@@ -1,0 +1,93 @@
+<style type="text/css">
+.leo-btn{
+	opacity:0.8;
+}
+#leo-timedate{
+	color:#BFBFBF;
+	padding-left:10px;
+	opacity:0.8;
+}
+.leo-hidden-text{
+	color:#E8E8E8;
+}
+</style>
+
+<div class="col-sm-12" id="holder">
+	<h1 class="app-headers">Leo</h1>
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="leo-success">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Saved</h4>
+				</div>
+				<div class="modal-body">
+					<pre id="leo-lastOpenHere"></pre>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn leo-btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1">
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" id="leo-title" placeholder="Title">
+			</div>
+			<div class="form-group">
+				<textarea class="form-control input-lg" id="leo-bodytext" rows="15"></textarea>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" id="leo-tags" placeholder="here, go, your, tags">
+			</div>
+			<button type="button" id="leo-submit" class="btn leo-btn btn-default"><i class="fa fa-asterisk"></i></button>
+			<button type="button" id="leo-hiddenMode" class="btn leo-btn btn-default"><i class="fa fa-eye-slash"></i></button>
+			<button type="button" id="leo-cyrMode" class="btn leo-btn btn-default"><strong>Ж</strong></button>
+			<span id="leo-timedate">Loading...</span>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+// Allow style types in text editor
+// Secret mode which turns everything into Cyrillic
+// Or secret mode turns down the brightness so it's hard to read
+const fs = require('fs')
+
+let lastOpen = null;
+
+window.$("#leo-submit").click(function(){
+	let unixTimestamp = moment().format("X");
+	let thisEntry = {
+		"time":unixTimestamp,
+		"title":window.$("#leo-title").val(),
+		"body":window.$("#leo-bodytext").val(),
+		"tags":window.$("#leo-tags").val()
+	};
+	console.log(unixTimestamp);
+	console.log(thisEntry);
+	lastOpen = __dirname + "/modules/leo/.etc/" + unixTimestamp + ".json";
+	fs.writeFile(lastOpen,JSON.stringify(thisEntry),(err) => {
+		if (err) throw err;
+		window.$("#leo-lastOpenHere").text("nano " + lastOpen);
+		$('#leo-success').modal('toggle');
+		window.$("#leo-title").val("");
+		window.$("#leo-bodytext").val("");
+		window.$("#leo-tags").val("");
+	})
+})
+window.$("#leo-hiddenMode").click(function(){
+	window.$('#leo-bodytext').addClass('leo-hidden-text')
+})
+window.$("#leo-cyrMode").click(function(){
+	window.$('#leo-bodytext').addClass('leo-hidden-text')
+})
+setInterval(function () {
+	var displayDT = moment().format("dddd MMM. Do, YYYY h:mma");
+	window.$("#leo-timedate").text(displayDT);
+}, 2000);
+</script>

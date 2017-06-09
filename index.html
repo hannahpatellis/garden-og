@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>SCN Now</title>
+	<!-- CSS Normalize and Reset -->
+	<link rel="stylesheet" href="./assets/css/normalize.css" />
+	<!-- Bootstrap - Local -->
+	<link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+	<!-- Font Awesome - Local -->
+	<link rel="stylesheet" href="./assets/css/font-awesome.min.css" />
+	<!-- Custom CSS styles file -->
+	<link rel="stylesheet" href="./assets/css/custom.css" />
+	<script>
+		const { remote } = require('electron') // Make remote available to close the window
+		window.$ = window.jQuery = require('jquery') // jQuery used for DOM
+		const jsonfile = require('jsonfile') // Read JSON files easier
+		const moment = require('moment') // Moment used to time processing
+		var scnmods = jsonfile.readFileSync(__dirname + '/config/modules.json') // Read modules config file
+		var scnconfig = jsonfile.readFileSync(__dirname + '/config/config.json') // Read config file
+		console.log(scnmods) // Log modules
+		console.log(scnconfig) // Log config
+		// Access Mongo
+		const MongoClient = require('mongodb').MongoClient
+		const MDBurl = 'mongodb://'+scnconfig.localMongoDB_IP+':'+scnconfig.localMongoDB_Port+'/scnnow'
+		// Setup Mongo logging
+		function MDBlogevent(eventmodule, eventactivity){
+			let timestamp = Math.round((new Date()).getTime() / 1000)
+			MongoClient.connect(MDBurl, function(err, db) {
+				db.collection('log').insert({"timestamp":timestamp, "module":eventmodule, "activity":eventactivity}, function(err, result) {
+					if (err) throw err
+					db.close()
+				})
+			})
+		}
+		MDBlogevent("app", "app started")
+		MDBlogevent("app", "mongo log running")
+	</script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu-collapse" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" id="navbar-go-home">
+					<img alt="Sapphic Citadel Network" src="assets/img/scn_header.svg" height="35px">
+				</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-menu-collapse">
+				<p class="navbar-text" id="navbar-greeting">Hello!</p>
+				<ul class="nav navbar-nav" id="navbar-back-option">
+					<li id="navbar-back-option-icn"><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="navbar-module-list-name">Loading...</span> <span class="caret"></span></a>
+						<ul class="dropdown-menu" id="navbar-modules-list"></ul>
+					</li>
+					<li id="navbar-close-icn"><a href="#"><i class="fa fa-times"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<!-- This div is always for home -->
+		<div class="row wrap" id="now_home">
+			<div class="col-sm-12">
+				<h1 id="home-header">Welcome to <br />SCN Now</h1>
+				<h1 id="home-bottom">You look <br />great today</h1>
+			</div>
+		</div>
+		<!-- This div is used to load modules -->
+		<div class="row wrap" id="now_mod"></div>
+	</div>
+</body>
+
+<!-- Scripts for the page -->
+<script src="./assets/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+// Sets default state and other initial defaults
+let currentState = 'home'
+window.$('#navbar-module-list-name').text('Modules')
+window.$('#navbar-greeting').text('Hello, '+scnconfig.primaryUser.first+'!')
+window.$('#navbar-back-option').hide()
+window.$('#now_mod').hide()
+MDBlogevent("app", "home loaded")
+// Loops through modules and appends them to the modules dropdown
+for(var mod in scnmods){
+	let modStatColorClass = 'mod-status-color-prod'
+	if(scnmods[mod].status == 'dev'){modStatColorClass = 'mod-status-color-dev'}
+	if(scnmods[mod].status == 'predev'){modStatColorClass = 'mod-status-color-predev'}
+	window.$('#navbar-modules-list').append('<li class="mod-entry" id="'+scnmods[mod].title+'"><a href="#"><i class="'+modStatColorClass+' fa fa-'+scnmods[mod].icon+' fa-fw"></i>'+scnmods[mod].title+'</a></li>')
+	MDBlogevent("app", "initial find and display for "+scnmods[mod].title)
+}
+// Handle click events on the modules
+window.$('.mod-entry').click(function(){
+	loadModule(window.$(this).attr('id'))
+})
+// Handle click events on the back button or logo when inside the module state
+window.$('#navbar-back-option-icn').click(function(){loadHome()})
+window.$('#navbar-go-home').click(function(){loadHome()})
+window.$('#navbar-close-icn').click(function(){
+	MDBlogevent("app", "app closing")
+	var window = remote.getCurrentWindow()
+	window.close()
+})
+// Load a module
+function loadModule(module){
+	window.$('#navbar-module-list-name').text(module)
+	window.$('#now_home').hide()
+	currentState = 'module'
+	let address = __dirname+'/modules/'+module+'/index.html'
+	window.$('#now_mod').load(address, function(){
+		window.$('#navbar-greeting').hide()
+		window.$('#navbar-back-option').show()
+		window.$('#now_mod').show()
+		MDBlogevent("app", "module loaded: "+module)
+	})
+}
+// Load the home
+function loadHome(){
+	MDBlogevent("app", "returned to home")
+	window.$('#navbar-module-list-name').text('Modules')
+	window.$('#now_mod').hide()
+	window.$('#holder').remove()
+	window.$('#now_home').show()
+	currentState = 'home'
+	window.$('#navbar-greeting').show()
+	window.$('#navbar-back-option').hide()
+}
+</script>
+</html>

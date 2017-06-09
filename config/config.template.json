@@ -1,0 +1,37 @@
+{
+	"networkName": {
+		"regular": "Sapphic Citadel",
+		"long": "Sapphic Citadel Network",
+		"short": "SCN"
+	},
+	"localMongoDB_IP": "localhost",
+	"localMongoDB_Port": "191919",
+	"primaryUser": {
+		"first": "Hannah",
+		"legalFirst": "Alexandria",
+		"middle": "Isadora",
+		"last": "Patellis",
+		"pronouns": {
+			"subject": "she",
+			"object": "her",
+			"possessiveAdj": "her",
+			"possessive": "hers",
+			"reflexive": "herself"
+		}
+	},
+	"logo": "scn.svg",
+	"colors": {
+		"black": "#1F1F1F",
+		"grey": "#E2E2E2",
+		"white": "#FFFFFF",
+		"purple": "#A36BF0",
+		"red": "#F0545E",
+		"blue": "#2E2ECD",
+		"teal": "#6FEECD",
+		"orange": "#E06030",
+		"yellow": "#F8CB28"
+	},
+	"deviceList": {
+		"webserver": "0.0.0.0"
+	}
+}

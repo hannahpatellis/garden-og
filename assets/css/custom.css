@@ -1,0 +1,104 @@
+/* Colors swatches
+1F1F1F - Black
+E2E2E2 - Grey
+FFFFFF - White
+
+A36BF0 - Purple
+F0545E - Red
+
+2E2ECD - Blue
+6FEECD - Teal
+
+E06030 - Orange
+F8CB28 - Yellow */
+
+@font-face {
+	font-family: 'Proxima Nova';
+	src: url('../fonts/proximanova-bold-webfont.woff2') format('woff2'),
+		url('../fonts/proximanova-bold-webfont.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Proxima Nova';
+	src: url('../fonts/proximanova-boldit-webfont.woff2') format('woff2'),
+		url('../fonts/proximanova-boldit-webfont.woff') format('woff');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Proxima Nova';
+	src: url('../fonts/proximanova-light-webfont.woff2') format('woff2'),
+		url('../fonts/proximanova-light-webfont.woff') format('woff');
+	font-weight: lighter;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Proxima Nova';
+	src: url('../fonts/proximanova-lightitalic-webfont.woff2') format('woff2'),
+		url('../fonts/proximanova-lightitalic-webfont.woff') format('woff');
+	font-weight: lighter;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Proxima Nova';
+	src: url('../fonts/proximanova-regular-webfont.woff2') format('woff2'),
+		url('../fonts/proximanova-regular-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Proxima Nova';
+	src: url('../fonts/proximanova-regularitalic-webfont.woff2') format('woff2'),
+		url('../fonts/proximanova-regularitalic-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: italic;
+}
+body{
+	font-family:'Proxima Nova',Helvetica,sans-serif;
+	background-color:#E2E2E2;
+}
+hr{
+	border-color:#BFBFBF;
+}
+a.navbar-brand{
+	padding:8px 15px 0px 15px;
+}
+li.mod-entry i{
+	padding-right:10px;
+}
+div.wrap{
+	margin-top:80px;
+	padding:20px 20px 20px 20px;
+}
+h1#home-header{
+	font-size:80px;
+	font-weight:bold;
+	position: fixed;
+	top:120px;
+	left:40px;
+}
+h1#home-bottom{
+	font-size:80px;
+	font-weight:bold;
+	text-align:right;
+	color:#BFBFBF;
+	position: fixed;
+	bottom:40px;
+	right:40px;
+}
+h1.app-headers{
+	font-size:70px;
+	font-weight: bold;
+	color:#BFBFBF;
+	margin-bottom:30px;
+}
+i.mod-status-color-prod{
+	color:#333;
+}
+i.mod-status-color-dev{
+	color:#A36BF0;
+}
+i.mod-status-color-predev{
+	color:#F0545E;
+}

@@ -1,0 +1,13 @@
+# Mongo structure
+
+Database: scnnow
+
+Collections:
+* log
+
+## log // a log of all activities
+{
+    "timestamp": 1495593089, // UNIX Timestamp
+    "module": "test", // Module name or home or app
+    "activity": "test event" // general text, try to keep universal
+}
