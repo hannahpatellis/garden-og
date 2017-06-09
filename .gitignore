@@ -1,0 +1,30 @@
+node_modules/
+modules/
+config/config.json
+config/modules.json
+execute.sh
+SCN\ Now.app
+resources/
+ARCHIVE/
+logs
+*.log
+npm-debug.log*
+build/Release
+.npm
+.env
+*.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
