@@ -1,6 +1,7 @@
 node_modules/
 modules/
 config/config.json
+config.codekit3
 config/modules.json
 execute.sh
 SCN\ Now.app
