@@ -5,6 +5,7 @@ config.codekit3
 config/modules.json
 execute.sh
 SCN\ Now.app
+Garden.app
 resources/
 ARCHIVE/
 logs
